@@ -36,6 +36,7 @@ pub mod types;
 pub mod gnark;
 pub mod halo2;
 pub mod sp1;
+pub mod jolt;
 mod zk_utils;
 
 const S3_BUCKET_NAME: &str = "storage.alignedlayer.com";
