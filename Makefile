@@ -154,6 +154,10 @@ operator_deposit_and_register: operator_deposit_into_strategy operator_register_
 
 operator_full_registration: operator_get_eth operator_register_with_eigen_layer operator_mint_mock_tokens operator_deposit_into_mock_strategy operator_whitelist_devnet operator_register_with_aligned_layer
 
+operator_start_docker:
+	@echo "Starting Operator..."
+	@docker-compose -f operator/docker/compose.yaml up
+
 __BATCHER__:
 
 BURST_SIZE=5
@@ -185,7 +189,7 @@ batcher/target/release/aligned:
 
 batcher_send_sp1_task:
 	@echo "Sending SP1 fibonacci task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system SP1 \
 		--proof test_files/sp1/sp1_fibonacci.proof \
 		--vm_program test_files/sp1/sp1_fibonacci-elf \
@@ -193,7 +197,7 @@ batcher_send_sp1_task:
 
 batcher_send_sp1_burst:
 	@echo "Sending SP1 fibonacci task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system SP1 \
 		--proof test_files/sp1/sp1_fibonacci.proof \
 		--vm_program test_files/sp1/sp1_fibonacci-elf \
@@ -224,7 +228,7 @@ batcher_send_infinite_sp1:
 
 batcher_send_plonk_bn254_task: batcher/target/release/aligned
 	@echo "Sending Groth16Bn254 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system GnarkPlonkBn254 \
 		--proof test_files/plonk_bn254/plonk.proof \
 		--public_input test_files/plonk_bn254/plonk_pub_input.pub \
@@ -233,7 +237,7 @@ batcher_send_plonk_bn254_task: batcher/target/release/aligned
 
 batcher_send_plonk_bn254_burst: batcher/target/release/aligned
 	@echo "Sending Groth16Bn254 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system GnarkPlonkBn254 \
 		--proof test_files/plonk_bn254/plonk.proof \
 		--public_input test_files/plonk_bn254/plonk_pub_input.pub \
@@ -243,7 +247,7 @@ batcher_send_plonk_bn254_burst: batcher/target/release/aligned
 
 batcher_send_plonk_bls12_381_task: batcher/target/release/aligned
 	@echo "Sending Groth16 BLS12-381 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system GnarkPlonkBls12_381 \
 		--proof test_files/plonk_bls12_381/plonk.proof \
 		--public_input test_files/plonk_bls12_381/plonk_pub_input.pub \
@@ -252,7 +256,7 @@ batcher_send_plonk_bls12_381_task: batcher/target/release/aligned
 
 batcher_send_plonk_bls12_381_burst: batcher/target/release/aligned
 	@echo "Sending Groth16 BLS12-381 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system GnarkPlonkBls12_381 \
 		--proof test_files/plonk_bls12_381/plonk.proof \
 		--public_input test_files/plonk_bls12_381/plonk_pub_input.pub \
@@ -263,7 +267,7 @@ batcher_send_plonk_bls12_381_burst: batcher/target/release/aligned
 
 batcher_send_groth16_bn254_task: batcher/target/release/aligned
 	@echo "Sending Groth16Bn254 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Groth16Bn254 \
 		--proof test_files/groth16/ineq_1_groth16.proof \
 		--public_input test_files/groth16/ineq_1_groth16.pub \
@@ -272,7 +276,7 @@ batcher_send_groth16_bn254_task: batcher/target/release/aligned
 
 batcher_send_groth16_burst: batcher/target/release/aligned
 	@echo "Sending Groth16Bn254 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Groth16Bn254 \
 		--proof test_files/groth16/ineq_1_groth16.proof \
 		--public_input test_files/groth16/ineq_1_groth16.pub \
@@ -292,7 +296,7 @@ batcher_send_burst_groth16: batcher/target/release/aligned
 
 batcher_send_halo2_ipa_task: batcher/target/release/aligned
 	@echo "Sending Halo2 IPA 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Halo2IPA \
 		--proof test_files/halo2_ipa/proof.bin \
 		--public_input test_files/halo2_ipa/pub_input.bin \
@@ -300,7 +304,7 @@ batcher_send_halo2_ipa_task: batcher/target/release/aligned
 
 batcher_send_halo2_ipa_task_burst_5: batcher/target/release/aligned
 	@echo "Sending Halo2 IPA 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Halo2IPA \
 		--proof test_files/halo2_ipa/proof.bin \
 		--public_input test_files/halo2_ipa/pub_input.bin \
@@ -309,7 +313,7 @@ batcher_send_halo2_ipa_task_burst_5: batcher/target/release/aligned
 
 batcher_send_halo2_kzg_task: batcher/target/release/aligned
 	@echo "Sending Halo2 KZG 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Halo2KZG \
 		--proof test_files/halo2_kzg/proof.bin \
 		--public_input test_files/halo2_kzg/pub_input.bin \
@@ -318,7 +322,7 @@ batcher_send_halo2_kzg_task: batcher/target/release/aligned
 
 batcher_send_halo2_kzg_task_burst_5: batcher/target/release/aligned
 	@echo "Sending Halo2 KZG 1!=0 task to Batcher..."
-	@cd batcher/aligned/ && cargo run --release -- \
+	@cd batcher/aligned/ && cargo run --release -- submit \
 		--proving_system Halo2KZG \
 		--proof test_files/halo2_kzg/proof.bin \
 		--public_input test_files/halo2_kzg/pub_input.bin \
@@ -508,6 +512,10 @@ upgrade_stake_registry: ## Upgrade Stake Registry
 	@echo "Upgrading Stake Registry..."
 	@. contracts/scripts/.env && . contracts/scripts/upgrade_stake_registry.sh
 
+deploy_verify_batch_inclusion_caller:
+	@echo "Deploying VerifyBatchInclusionCaller contract..."
+	@. contracts/scripts/.env && . ./contracts/scripts/deploy_verify_batch_inclusion_caller.sh
+	
 build_aligned_contracts:
 	@cd contracts/src/core && forge build
 
@@ -522,9 +530,6 @@ build_binaries:
 	@echo "Building task sender.."
 	@go build -o ./task_sender/build/aligned-task-sender ./task_sender/cmd/main.go
 	@echo "Task sender built into /task_sender/build/aligned-task-sender"
-
-run_local:
-	./scripts/run_local.sh
 
 __SP1_FFI__: ##
 build_sp1_macos:
@@ -723,17 +728,55 @@ build_all_ffi_linux: ## Build all FFIs for Linux
 	@$(MAKE) build_risc_zero_linux
 #	@$(MAKE) build_merkle_tree_linux
 	@$(MAKE) build_halo2_ipa_linux
+	@$(MAKE) build_halo2_kzg_linux
 	@echo "All Linux FFIs built successfully."
 
 
 __EXPLORER__:
-run_devnet_explorer:
+run_devnet_explorer: run_db ecto_setup_db
 	@cd explorer/ && \
 		mix setup && \
 		cp .env.dev .env && \
 		./start.sh
 
-run_explorer:
+run_explorer: run_db ecto_setup_db
 	@cd explorer/ && \
 		mix setup && \
 		./start.sh
+
+build_db:
+	@cd explorer && \
+		docker build -t explorer-postgres-image .
+
+run_db: remove_db_container
+	@cd explorer && \
+		docker run -d --name explorer-postgres-container -p 5432:5432 -v explorer-postgres-data:/var/lib/postgresql/data explorer-postgres-image
+
+ecto_setup_db:
+		@cd explorer/ && \
+		./ecto_setup_db.sh
+
+remove_db_container:
+	@cd explorer && \
+		docker stop explorer-postgres-container || true  && \
+		docker rm explorer-postgres-container || true
+
+clean_db: remove_db_container
+	@cd explorer && \
+		docker volume rm explorer-postgres-data || true
+
+dump_db:
+	@cd explorer && \
+		docker exec -t explorer-postgres-container pg_dumpall -c -U explorer_user > dump.$$(date +\%Y\%m\%d_\%H\%M\%S).sql
+	@echo "Dumped database successfully to /explorer"
+
+recover_db: run_db
+	@read -p $$'\e[32mEnter the dump file to recover (e.g., dump.20230607_123456.sql): \e[0m' DUMP_FILE && \
+	cd explorer && \
+	docker cp $$DUMP_FILE explorer-postgres-container:/dump.sql && \
+	docker exec -t explorer-postgres-container psql -U explorer_user -d explorer_db -f /dump.sql && \
+	echo "Recovered database successfully from $$DUMP_FILE"
+
+explorer_fetch_old_batches:
+	@cd explorer && \
+		./scripts/fetch_old_batches.sh 1600000 1716277 

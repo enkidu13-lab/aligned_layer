@@ -1,11 +1,10 @@
-use aligned_batcher_lib::types::{ProvingSystemId, VerificationData};
+use crate::gnark::verify_gnark;
+use crate::halo2::ipa::verify_halo2_ipa;
+use crate::halo2::kzg::verify_halo2_kzg;
 use crate::sp1::verify_sp1_proof;
 use crate::jolt::verify_jolt_proof;
-use crate::halo2::kzg::verify_halo2_kzg;
-use crate::halo2::ipa::verify_halo2_ipa;
-use crate::gnark::verify_gnark;
+use aligned_batcher_lib::types::{ProvingSystemId, VerificationData};
 use log::{debug, warn};
-
 
 pub(crate) fn verify(verification_data: &VerificationData) -> bool {
     match verification_data.proving_system {
@@ -29,7 +28,10 @@ pub(crate) fn verify(verification_data: &VerificationData) -> bool {
                 .as_ref()
                 .expect("Verification key is required");
 
-            let pub_input = verification_data.pub_input.as_ref().expect("Public input is required");
+            let pub_input = verification_data
+                .pub_input
+                .as_ref()
+                .expect("Public input is required");
             let is_valid = verify_halo2_kzg(&verification_data.proof, pub_input, vk);
             debug!("Halo2-KZG proof is valid: {}", is_valid);
             is_valid
@@ -40,7 +42,10 @@ pub(crate) fn verify(verification_data: &VerificationData) -> bool {
                 .as_ref()
                 .expect("Verification key is required");
 
-            let pub_input = verification_data.pub_input.as_ref().expect("Public input is required");
+            let pub_input = verification_data
+                .pub_input
+                .as_ref()
+                .expect("Public input is required");
             let is_valid = verify_halo2_ipa(&verification_data.proof, pub_input, vk);
             debug!("Halo2-IPA proof is valid: {}", is_valid);
             is_valid
@@ -53,8 +58,16 @@ pub(crate) fn verify(verification_data: &VerificationData) -> bool {
                 .as_ref()
                 .expect("Verification key is required");
 
-            let pub_input = verification_data.pub_input.as_ref().expect("Public input is required");
-            let is_valid = verify_gnark(&verification_data.proving_system, &verification_data.proof, pub_input, vk);
+            let pub_input = verification_data
+                .pub_input
+                .as_ref()
+                .expect("Public input is required");
+            let is_valid = verify_gnark(
+                &verification_data.proving_system,
+                &verification_data.proof,
+                pub_input,
+                vk,
+            );
             debug!("Gnark proof is valid: {}", is_valid);
             is_valid
         }
