@@ -34,8 +34,3 @@ jolt-sdk = { git = "https://github.com/PatStiles/Lasso.git", branch = "feat/inte
 jolt-core = { git = "https://github.com/PatStiles/Lasso.git", branch = "feat/integration_changes" }
 tracer = { git = "https://github.com/PatStiles/Lasso.git", branch = "feat/integration_changes" }
 ark-bn254 = "0.4.0"
-
-[patch.crates-io]
-ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }
-ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }
-ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }
